@@ -1,8 +1,8 @@
-package com.trainingfresher.sampleservice.dao;
+package com.trainingfresher.sampleservice.repository;
 import com.trainingfresher.sampleservice.model.entity.Team;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TeamDao extends CrudRepository<Team, Long> {
+public interface TeamRepository extends CrudRepository<Team, Long> {
 }
