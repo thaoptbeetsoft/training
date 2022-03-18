@@ -1,15 +1,14 @@
 package com.trainingfresher.sampleservice.utils.exception;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class BadRequestException extends RuntimeException{
 
 
-public class BadRequestException extends BaseException {
-    private static final long serialVersionUID = -3541506651550285548L;
-
-    public BadRequestException() {
-        super(HttpStatus.BAD_REQUEST);
-    }
+    public String message;
 
     public BadRequestException(String message) {
-        super(message, HttpStatus.BAD_REQUEST);
+        this.message = message;
     }
 }

@@ -2,6 +2,8 @@ package com.trainingfresher.sampleservice.model.entity;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,6 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "history")
 @Data
+@NoArgsConstructor
 public class History {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

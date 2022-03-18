@@ -1,5 +1,10 @@
 package com.trainingfresher.sampleservice.model.entity;
+import com.trainingfresher.sampleservice.model.dto.TaskDto;
+import com.trainingfresher.sampleservice.utils.constants.Constant;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,7 +16,9 @@ import java.util.List;
 @Entity
 @Table(name = "tasks")
 @Data
-public class Task{
+@Builder
+public class Task {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
@@ -52,6 +59,9 @@ public class Task{
     @Column
     private String status;
 
+    @OneToMany()
+    private List<History> histories =  new ArrayList<>();
+
     @OneToOne()
     @JoinColumn(name = "parent_id")
     private Task parent;
@@ -61,6 +71,5 @@ public class Task{
 
     @OneToMany
     private List<Comment> comments = new ArrayList<>();
-
 
 }
