@@ -88,7 +88,7 @@ public class TaskController {
     @GetMapping("/{id}/getListComment")
     public ResponseEntity<?> getListComment(@PathVariable(name = "id") Long taskId) {
 
-      List<Comment> comments = taskService.getListComment(taskId);
+       List<Comment>  data = taskService.getListComment(taskId);
 
         ApiResponse response = ApiResponse.appendSuccess(data, 200, null);
         return ResponseEntity.ok(response);
