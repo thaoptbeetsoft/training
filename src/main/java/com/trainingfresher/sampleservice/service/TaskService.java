@@ -1,9 +1,10 @@
 package com.trainingfresher.sampleservice.service;
 
+import com.trainingfresher.sampleservice.api.form.CommentForm;
 import com.trainingfresher.sampleservice.api.form.TaskForm;
 import com.trainingfresher.sampleservice.model.dto.TaskDto;
+import com.trainingfresher.sampleservice.model.entity.Comment;
 import com.trainingfresher.sampleservice.model.entity.Task;
-import com.trainingfresher.sampleservice.utils.exception.BadRequestException;
 
 import java.util.List;
 
@@ -24,4 +25,12 @@ public interface TaskService {
     List<Task> getListTask(Long projectId, Long sectionId);
 
     TaskDto convertToDto(Task task);
+
+    Comment addComment(CommentForm dto, Long taskId);
+
+    Comment editComment(Long taskId, Long commentId, String text);
+
+    void deleteComment(Long taskId, Long commentId);
+
+    List<Comment> getListComment(Long taskId);
 }

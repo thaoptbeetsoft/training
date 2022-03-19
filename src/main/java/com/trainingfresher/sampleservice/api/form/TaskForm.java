@@ -14,6 +14,7 @@ public class TaskForm {
     private String priority;
     private String jobDescription;
     private String status;
+    private Long parentId;
     private Long projectId;
     private Long sectionId;
 }
