@@ -11,7 +11,6 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
-@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -28,6 +27,10 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private List<Team> teams = new ArrayList<>();
+
+    public  User() {
+
+    }
 
 
 }

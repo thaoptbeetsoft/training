@@ -232,28 +232,7 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
-    @Override
-    public TaskDto convertToDto(Task task) {
 
-
-        return TaskDto.builder()
-                .name(task.getName())
-                .startDay(task.getStartDay())
-                .endDay(task.getEndDay())
-                .type(task.getType())
-                .priority(task.getPriority())
-                .jobDescription(task.getJobDescription())
-                .status(task.getStatus())
-                .assignee(task.getAssignee().getName())
-                .projectName(task.getProjectName())
-                .section(task.getSection())
-                .project(task.getProject())
-                .comments(task.getComments())
-                .subTask(task.getSubTask())
-                .histories(task.getHistories())
-                .build();
-
-    }
 }
 
 

@@ -30,7 +30,7 @@ public class TaskController {
     public ResponseEntity<?> addNewTask(@RequestBody TaskForm dto) {
 
         Task task = taskService.addNewTask(dto);
-        TaskDto data = taskService.convertToDto(task);
+        TaskDto data = task.toDto();
         ApiResponse response = ApiResponse.appendSuccess(data, 200, MessageConstants.ADD_NEW_TASK_SUCCESS);
         return ResponseEntity.ok(response);
 
@@ -40,7 +40,7 @@ public class TaskController {
     public ResponseEntity<?> getTaskById(@PathVariable(name = "id") Long id) {
 
         Task task = taskService.getById(id);
-        TaskDto data = taskService.convertToDto(task);
+        TaskDto data = task.toDto();
         ApiResponse response = ApiResponse.appendSuccess(data, 200, null);
         return ResponseEntity.ok(response);
 
@@ -50,11 +50,7 @@ public class TaskController {
     public ResponseEntity<?> getListTask(@RequestParam(name = "project_id") Long projectId, @RequestParam(name = "section_id") Long sectionId) {
 
         List<Task> tasks = taskService.getListTask(projectId, sectionId);
-        List<TaskDto> data = tasks.stream().map(item -> {
-            TaskDto task = taskService.convertToDto(item);
-            return task;
-        }).collect(Collectors.toList());
-
+        List<TaskDto> data = tasks.stream().map(Task::toDto).collect(Collectors.toList());
         ApiResponse response = ApiResponse.appendSuccess(data, 200, null);
         return ResponseEntity.ok(response);
 
@@ -65,7 +61,7 @@ public class TaskController {
     public ResponseEntity<?> updateStatus(@PathVariable(name = "id") Long id ,@RequestParam(name = "status") String status) {
 
         Task task = taskService.updateStatus(id, status);
-        TaskDto data = taskService.convertToDto(task);
+        TaskDto data = task.toDto();
         ApiResponse response = ApiResponse.appendSuccess(data, 200, MessageConstants.UPDATE_STATUS_SUCCESS);
         return ResponseEntity.ok(response);
 

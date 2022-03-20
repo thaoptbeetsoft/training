@@ -24,7 +24,6 @@ public interface TaskService {
 
     List<Task> getListTask(Long projectId, Long sectionId);
 
-    TaskDto convertToDto(Task task);
 
     Comment addComment(CommentForm dto, Long taskId);
 

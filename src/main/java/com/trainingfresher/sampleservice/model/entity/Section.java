@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "section")
 @Data
-@NoArgsConstructor
+
 public class Section{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -27,5 +27,9 @@ public class Section{
 
     @OneToMany
     private List<Task> tasks = new ArrayList<>();
+
+    public Section() {
+
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.trainingfresher.sampleservice.model.entity;
 import com.trainingfresher.sampleservice.model.dto.TaskDto;
 import com.trainingfresher.sampleservice.utils.constants.Constant;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,8 @@ import java.util.List;
 @Table(name = "tasks")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Task {
 
     @Id
@@ -71,5 +74,25 @@ public class Task {
 
     @OneToMany
     private List<Comment> comments = new ArrayList<>();
+
+    public  TaskDto toDto() {
+        return  TaskDto.builder()
+                .name(name)
+                .startDay(startDay)
+                .endDay(endDay)
+                .type(type)
+                .priority(priority)
+                .jobDescription(jobDescription)
+                .status(status)
+                .assignee(name)
+                .projectName(projectName)
+                .section(section)
+                .project(project)
+                .comments(comments)
+                .subTask(subTask)
+                .histories(histories)
+                .build();
+    }
+
 
 }

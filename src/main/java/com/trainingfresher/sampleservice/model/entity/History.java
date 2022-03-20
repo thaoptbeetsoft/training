@@ -12,8 +12,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "history")
 @Data
-@NoArgsConstructor
 public class History {
+
+    public History() {
+
+    }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;

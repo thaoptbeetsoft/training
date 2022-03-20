@@ -34,6 +34,9 @@ public class Department {
     )
     private List<Team> teams = new ArrayList<>();
 
+    public Department() {
+
+    }
 
 
 }
