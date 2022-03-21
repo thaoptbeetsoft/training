@@ -24,7 +24,7 @@ public class Department {
             joinColumns = @JoinColumn(name = "department_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id")
     )
-    private List<Project> projects = new ArrayList<>();
+    private List<Project> projects ;
 
     @ManyToMany
     @JoinTable(

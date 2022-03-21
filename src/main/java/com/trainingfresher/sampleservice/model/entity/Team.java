@@ -21,9 +21,6 @@ public class Team {
     private String name;
 
 
-    @ManyToMany(mappedBy = "teams")
-    private List<Project> projects = new ArrayList<>();
-
     @ManyToMany
     @JoinTable(
             name = "team_user",

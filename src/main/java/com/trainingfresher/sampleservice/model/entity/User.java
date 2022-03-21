@@ -23,8 +23,6 @@ public class User {
     @Column
     private String phone;
 
-    @ManyToMany(mappedBy = "users")
-    private List<Team> teams = new ArrayList<>();
 
 
 }
