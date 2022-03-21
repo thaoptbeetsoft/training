@@ -10,9 +10,12 @@ import java.util.List;
 public interface TaskRepository extends CrudRepository<Task, Long> {
     Task findByName(String name);
 
-    @Query(value = "SELECT t FROM Task t JOIN Section s ON t.section_id = s.id JOIN Project p ON s.project_id = p.id WHERE s.id = ?2 AND p.id = ?1", nativeQuery = true)
+    @Query("SELECT t FROM Task t " +
+            "JOIN Section s ON t.section = s.id " +
+            "JOIN Project p ON s.project = p.id " +
+            "WHERE s.id = :sectionId AND p.id = :projectId")
     List<Task> getListTaskInSection(Long projectId, Long sectionId);
 
-    @Query(value = "SELECT t FROM Task t WHERE t.project_id = ?1 ", nativeQuery = true)
+    @Query("SELECT t FROM Task t WHERE t.project = :projectId ")
     List<Task> getListTaskNonSection(Long projectId);
 }

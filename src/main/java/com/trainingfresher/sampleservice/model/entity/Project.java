@@ -1,17 +1,22 @@
 package com.trainingfresher.sampleservice.model.entity;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.*;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "projects")
-@Data
+@Getter
 
+@Setter
 public class Project {
     public Project() {
 
@@ -24,11 +29,10 @@ public class Project {
     @Column
     private String name;
 
-    @Column
-    private boolean enable;
 
-    @OneToMany
-    private List<Task> tasks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project")
+    private Set<Task> tasks = new HashSet<>();
 
     @OneToMany
     private List<Section> sections = new ArrayList<>();
@@ -43,4 +47,12 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
     private List<Team> teams = new ArrayList<>();
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
+    }
 }

@@ -1,30 +1,32 @@
 package com.trainingfresher.sampleservice.model.entity;
+import com.fasterxml.jackson.annotation.*;
 import com.trainingfresher.sampleservice.model.dto.TaskDto;
 import com.trainingfresher.sampleservice.utils.constants.Constant;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.logging.Filter;
 
 @Entity
 @Table(name = "tasks")
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Task {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  Long id;
 
     @Column
     private String name;
@@ -48,9 +50,13 @@ public class Task {
     @Column
     private String priority;
 
-    @ManyToOne
+
+
+    @ManyToOne()
     @JoinColumn(name = "project_id")
     private Project project;
+
+
 
     @ManyToOne()
     @JoinColumn(name = "section_id")
@@ -74,6 +80,23 @@ public class Task {
 
     @OneToMany
     private List<Comment> comments = new ArrayList<>();
+
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
+    }
 
     public  TaskDto toDto() {
         return  TaskDto.builder()

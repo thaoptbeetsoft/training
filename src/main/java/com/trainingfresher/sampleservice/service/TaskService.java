@@ -8,12 +8,9 @@ import com.trainingfresher.sampleservice.model.entity.Task;
 
 import java.util.List;
 
-/**
- * @author Nhat
- */
-
 public interface TaskService {
     Task addNewTask(TaskForm dto);
+
     Task save(Task task);
 
     Task updateStatus(Long id, String status);
@@ -23,7 +20,6 @@ public interface TaskService {
     Task getById(Long id);
 
     List<Task> getListTask(Long projectId, Long sectionId);
-
 
     Comment addComment(CommentForm dto, Long taskId);
 

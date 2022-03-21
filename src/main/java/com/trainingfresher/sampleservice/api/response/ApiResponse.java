@@ -25,14 +25,6 @@ public class ApiResponse {
     }
 
 
-    /**
-     * @author Nhat
-     * create Api response
-     * @param data
-     * @param code
-     * @param message
-     * @return
-     */
     public static ApiResponse appendSuccess(Object data, int code, String message) {
         Object dataTmp = new ArrayList<>();
         if (!ObjectUtils.isEmpty(data)) {

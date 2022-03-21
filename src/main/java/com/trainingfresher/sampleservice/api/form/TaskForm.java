@@ -10,7 +10,6 @@ public class TaskForm {
     private String name;
     private Date startDay;
     private Date endDay;
-    private String type;
     private String priority;
     private String jobDescription;
     private String status;

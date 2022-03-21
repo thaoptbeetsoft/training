@@ -2,7 +2,6 @@ package com.trainingfresher.sampleservice.service.impl;
 
 import com.trainingfresher.sampleservice.api.form.CommentForm;
 import com.trainingfresher.sampleservice.api.form.TaskForm;
-import com.trainingfresher.sampleservice.model.dto.TaskDto;
 import com.trainingfresher.sampleservice.model.entity.Comment;
 import com.trainingfresher.sampleservice.model.entity.Project;
 import com.trainingfresher.sampleservice.model.entity.Section;
@@ -14,8 +13,6 @@ import com.trainingfresher.sampleservice.repository.TaskRepository;
 import com.trainingfresher.sampleservice.service.TaskService;
 import com.trainingfresher.sampleservice.utils.exception.BadRequestException;
 import com.trainingfresher.sampleservice.utils.exception.NotFoundException;
-import com.trainingfresher.sampleservice.utils.message.MessageConstants;
-import com.trainingfresher.sampleservice.utils.message.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -24,9 +21,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
-/**
- * @author Nhat
- */
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -37,7 +31,6 @@ public class TaskServiceImpl implements TaskService {
     private ProjectRepository projectRepository;
     @Autowired
     private SectionRepository sectionRepository;
-
     @Autowired
     private CommentRepository commentRepository;
 
@@ -47,17 +40,15 @@ public class TaskServiceImpl implements TaskService {
 
         if (!StringUtils.hasText(dto.getName()) || !StringUtils.hasText(dto.getJobDescription())
                 || !StringUtils.hasText(dto.getStatus())) {
-            String msg = MessageUtils.getMessage(MessageConstants.INVALID_PARAMS);
+            String msg = "Invalid params";
             throw new BadRequestException(msg);
         }
-
         Task task = taskRepository.findByName(dto.getName());
 
         if (!ObjectUtils.isEmpty(task)) {
-            String msg = MessageUtils.getMessage(MessageConstants.TASK_EXIST);
+            String msg = "Task existed";
             throw new BadRequestException(msg);
         }
-
         Optional<Project> project = Optional.ofNullable(projectRepository.findById(dto.getProjectId()).get());
         Optional<Section> section = Optional.ofNullable(sectionRepository.findById(dto.getSectionId()).get());
 
@@ -67,7 +58,7 @@ public class TaskServiceImpl implements TaskService {
                 .name(dto.getName())
                 .startDay(dto.getStartDay())
                 .endDay(dto.getEndDay())
-                .type(dto.getType())
+                .type(section.get() == null ? "NonSection" : "InSection")
                 .jobDescription(dto.getJobDescription())
                 .status(dto.getStatus())
                 .priority(dto.getPriority())
@@ -82,7 +73,6 @@ public class TaskServiceImpl implements TaskService {
             taskRepository.saveAll(tasks);
             return task;
         }
-
         return save(task);
     }
 
@@ -90,10 +80,9 @@ public class TaskServiceImpl implements TaskService {
     public Task getById(Long id) {
         Task task = taskRepository.findById(id).get();
         if (ObjectUtils.isEmpty(task)) {
-            String msg = MessageUtils.getMessage(MessageConstants.TASK_NOT_EXIST);
+            String msg = "Task not exist";
             throw new NotFoundException(msg);
         }
-
         return task;
     }
 
@@ -106,11 +95,9 @@ public class TaskServiceImpl implements TaskService {
         } else {
             tasks = taskRepository.getListTaskNonSection(projectId);
         }
-
         if (CollectionUtils.isEmpty(tasks)) {
             return Collections.EMPTY_LIST;
         }
-
         return tasks;
     }
 
@@ -124,10 +111,9 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = taskRepository.findById(id).get();
         if (ObjectUtils.isEmpty(task)) {
-            String msg = MessageUtils.getMessage(MessageConstants.TASK_NOT_EXIST);
+            String msg = "Task not exist";
             throw new NotFoundException(msg);
         }
-
         task.setStatus(status);
         return save(task);
     }
@@ -137,11 +123,10 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = taskRepository.findById(id).get();
         if (ObjectUtils.isEmpty(task)) {
-            String msg = MessageUtils.getMessage(MessageConstants.TASK_NOT_EXIST);
+            String msg = "Task not exist";
             throw new NotFoundException(msg);
         }
         taskRepository.deleteById(id);
-
     }
 
     @Override
@@ -149,15 +134,13 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = taskRepository.findById(taskId).get();
         if (ObjectUtils.isEmpty(task)) {
-            String msg = MessageUtils.getMessage(MessageConstants.TASK_NOT_EXIST);
+            String msg = "Task not exist";
             throw new NotFoundException(msg);
         }
-
         if (!StringUtils.hasText(dto.getText())) {
-            String msg = MessageUtils.getMessage(MessageConstants.INVALID_PARAMS);
+            String msg = "Invalid params";
             throw new BadRequestException(msg);
         }
-
         Comment parent = commentRepository.findById(dto.getParentId()).get();
 
         Comment comment = Comment.builder()
@@ -171,29 +154,23 @@ public class TaskServiceImpl implements TaskService {
             commentRepository.saveAll(comments);
             return comment;
         }
-
         return commentRepository.save(comment);
-
-
     }
 
     @Override
     public Comment editComment(Long taskId, Long commentId, String text) {
         Task task = taskRepository.findById(taskId).get();
         if (ObjectUtils.isEmpty(task)) {
-            String msg = MessageUtils.getMessage(MessageConstants.TASK_NOT_EXIST);
+            String msg = "Task not exist";
             throw new NotFoundException(msg);
         }
-
         Comment comment = commentRepository.findById(commentId).get();
         if (ObjectUtils.isEmpty(comment)) {
-            String msg = MessageUtils.getMessage(MessageConstants.COMMENT_NOT_EXIST);
+            String msg = "Comment not exist";
             throw new NotFoundException(msg);
         }
-
         comment.setText(text);
         comment.setDate(new Date());
-
         return commentRepository.save(comment);
     }
 
@@ -201,38 +178,31 @@ public class TaskServiceImpl implements TaskService {
     public void deleteComment(Long taskId, Long commentId) {
         Task task = taskRepository.findById(taskId).get();
         if (ObjectUtils.isEmpty(task)) {
-            String msg = MessageUtils.getMessage(MessageConstants.TASK_NOT_EXIST);
+            String msg = "Task not exist";
             throw new NotFoundException(msg);
         }
-
         Comment comment = commentRepository.findById(commentId).get();
         if (ObjectUtils.isEmpty(comment)) {
-            String msg = MessageUtils.getMessage(MessageConstants.COMMENT_NOT_EXIST);
+            String msg = "Comment not exist";
             throw new NotFoundException(msg);
         }
-
         commentRepository.deleteById(commentId);
-
     }
 
     @Override
     public List<Comment> getListComment(Long taskId) {
         Task task = taskRepository.findById(taskId).get();
         if (ObjectUtils.isEmpty(task)) {
-            String msg = MessageUtils.getMessage(MessageConstants.TASK_NOT_EXIST);
+            String msg = "Task not exist";
             throw new NotFoundException(msg);
         }
-
         List<Comment> comments = commentRepository.findByTask(taskId);
         if(!CollectionUtils.isEmpty(comments)) {
             return comments;
         }else {
             return Collections.EMPTY_LIST;
         }
-
     }
-
-
 }
 
 

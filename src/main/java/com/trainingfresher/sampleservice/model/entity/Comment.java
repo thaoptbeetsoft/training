@@ -19,10 +19,9 @@ import java.util.Date;
 public class Comment {
 
 
-
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  Long id;
 
     @Column
     private String text;
