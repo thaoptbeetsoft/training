@@ -3,8 +3,10 @@ package com.trainingfresher.sampleservice.service.project;
 import com.trainingfresher.sampleservice.model.entity.Project;
 import com.trainingfresher.sampleservice.service.IGeneralService;
 
+import java.util.List;
+
 public interface IProjectService extends IGeneralService<Project> {
-    Iterable<Project> findAllByDepartment_id(Long id);
-    Iterable<Project> findAllByUser_IdEndDepartment_id(Long id);
+    List<Project> findAllByDepartmentId(Long id);
+    List<Project> findAllByUserIdAndDepartmentId(Long id);
     boolean hide(Long id);
 }

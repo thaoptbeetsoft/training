@@ -12,7 +12,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
+        // Set forbidden for path
+        // http.csrf().disable().anonymous().disable().authorizeRequests().antMatchers("/users/3").permitAll();
+
+        // Allow access path
+        http.authorizeRequests().antMatchers("v3/api-docs", "/swagger-ui.html", "/actuator/**").permitAll();
+
+       // http.csrf().disable().authorizeRequests().anyRequest().permitAll();
 
     }
 

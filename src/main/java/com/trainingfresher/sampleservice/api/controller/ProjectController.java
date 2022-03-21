@@ -18,8 +18,8 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping("/department/{id}")
-    public ResponseEntity<Iterable<Project>>findAllDepartment_id(@PathVariable Long id){
-        List<Project> projectIterable = (List<Project>) projectService.findAllByDepartment_id(id);
+    public ResponseEntity<List<Project>>findAllDepartmentId(@PathVariable Long id){
+        List<Project> projectIterable = projectService.findAllByDepartmentId(id);
         if(projectIterable.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -34,8 +34,8 @@ public class ProjectController {
         return new ResponseEntity<>(projectIterable.get(), HttpStatus.OK);
     }
     @GetMapping("/user/{id}")
-    public ResponseEntity<Iterable<Project>>findAllByUserEndDepartment_id(@PathVariable Long id){
-        List<Project>projectList =(List<Project>) projectService.findAllByUser_IdEndDepartment_id(id);
+    public ResponseEntity<List<Project>>findAllByUserIdAndDepartmentId(@PathVariable Long id){
+        List<Project>projectList =projectService.findAllByUserIdAndDepartmentId(id);
         if(projectList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

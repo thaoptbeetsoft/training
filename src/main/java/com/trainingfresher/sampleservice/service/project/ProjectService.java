@@ -5,6 +5,7 @@ import com.trainingfresher.sampleservice.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,14 +32,14 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public Iterable<Project> findAllByDepartment_id(Long id) {
-        return projectRepository.findAllByDepartment_id(id);
+    public List<Project> findAllByDepartmentId(Long id) {
+        return projectRepository.findAllByDepartmentId(id);
 
     }
 
     @Override
-    public Iterable<Project> findAllByUser_IdEndDepartment_id(Long id) {
-        return projectRepository.findAllByUser_IdEndDepartment_id(id);
+    public List<Project> findAllByUserIdAndDepartmentId(Long id) {
+        return projectRepository.findAllByUserIdAndDepartmentId(id);
     }
 
     @Override
