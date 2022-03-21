@@ -1,47 +1,23 @@
 package com.trainingfresher.sampleservice.service;
 
+import com.trainingfresher.sampleservice.api.form.DepartmentForm;
 import com.trainingfresher.sampleservice.model.entity.Department;
-import com.trainingfresher.sampleservice.repository.DepartmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class DepartmentService {
-    @Autowired
-    private DepartmentRepository repository;
+public interface DepartmentService {
+    Department addNewDepartment(DepartmentForm department);
 
-    public Department saveDepartment(Department department) {
-        return repository.save(department);
-    }
+    Department updateDepartment(String name, Long id);
 
-    public List<Department> saveDepartments(List<Department> departments) {
-        return (List<Department>) repository.saveAll(departments);
-    }
+    void deleteDepartment(Long id);
 
-    public List<Department> getDepartments() {
-        return (List<Department>) repository.findAll();
-    }
+    Department getById(Long id);
 
-    public Department getDepartmentById(long id) {
-        return repository.findById(id).orElse(null);
-    }
+    Department getByName(String name);
 
-    public Department getDepartmentByName(String name) {
-        return repository.findByName(name);
-    }
+    List<Department> getListDepartment();
 
-    public String deleteDepartment(long id) {
-        repository.deleteById(id);
-        return "department removed ||" + id;
-    }
+    Department save(Department department);
 
-    public Department updateDepartment(Department department) {
-        Department existingDepartment = repository.findById(department.getId()).orElse(null);
-        existingDepartment.setName(department.getName());
-        existingDepartment.setProjects(department.getProjects());
-        existingDepartment.setTeams(department.getTeams());
-        return repository.save(existingDepartment);
-    }
 }
