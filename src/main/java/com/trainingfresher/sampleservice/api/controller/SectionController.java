@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/sections")
@@ -23,5 +24,13 @@ public class SectionController {
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(sectionList,HttpStatus.OK);
+    }
+    @GetMapping("/{id}")
+    public  ResponseEntity<Section>findById(@PathVariable Long id){
+        Optional<Section>section = sectionService.findById(id);
+        if(!section.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(section.get(),HttpStatus.OK);
     }
 }

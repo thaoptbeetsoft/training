@@ -3,6 +3,9 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "section")
@@ -19,5 +22,7 @@ public class Section{
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @OneToMany
+    private List<Task> tasks = new ArrayList<>();
 
 }
