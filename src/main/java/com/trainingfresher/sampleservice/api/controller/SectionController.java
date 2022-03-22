@@ -25,6 +25,7 @@ public class SectionController {
         }
         return new ResponseEntity<>(sectionList,HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     public  ResponseEntity<Section>findById(@PathVariable Long id){
         Optional<Section>section = sectionService.findById(id);
@@ -33,4 +34,24 @@ public class SectionController {
         }
         return new ResponseEntity<>(section.get(),HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<Section>save(@RequestBody Section section){
+        if(section.getName().isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        sectionService.save(section);
+        return new ResponseEntity<>(section, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/{id}/{name}")
+    public ResponseEntity<Section> edit (@PathVariable Long id, @PathVariable String name){
+        Optional<Section>sectionOptional = sectionService.findById(id);
+        if(!sectionOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        sectionOptional.get().setName(name);
+        return new ResponseEntity<>(sectionOptional.get(),HttpStatus.OK);
+    }
+
 }

@@ -12,6 +12,7 @@ import java.util.Optional;
 public class SectionService implements ISectionService {
     @Autowired
     private SectionRepository sectionRepository;
+
     @Override
     public List<Section> findAll() {
         return (List<Section>) sectionRepository.findAll();

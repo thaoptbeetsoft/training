@@ -14,6 +14,7 @@ import java.util.Optional;
 @RequestMapping("/projects")
 @CrossOrigin("*")
 public class ProjectController {
+
     @Autowired
     private ProjectService projectService;
 
@@ -35,18 +36,13 @@ public class ProjectController {
         return new ResponseEntity<>(projectIterable.get(), HttpStatus.OK);
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<List<Project>>findAllByUserIdAndDepartmentId(@PathVariable Long id){
-        List<Project>projectList =projectService.findAllByUserIdAndDepartmentId(id);
-        if(projectList.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(projectList, HttpStatus.OK);
-    }
-
-    @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Project project){
-        projectService.save(project);
+    @PostMapping("/{departmentId}")
+    public ResponseEntity<Void> create(@PathVariable Long departmentId,@RequestBody Project project){
+      Long projectId = projectService.save(project).getId();
+       boolean check =  projectService.addProjectInDepartment(departmentId,projectId);
+     if(!check){
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+     }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

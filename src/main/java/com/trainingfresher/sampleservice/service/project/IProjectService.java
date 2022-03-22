@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IProjectService extends IGeneralService<Project> {
     List<Project> findAllByDepartmentId(Long id);
-    List<Project> findAllByUserIdAndDepartmentId(Long id);
     boolean hide(Long id);
+    boolean addProjectInDepartment(Long department_id,Long project_id);
+
 }

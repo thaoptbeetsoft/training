@@ -21,6 +21,15 @@ public class Project {
     @Column
     private boolean enable;
 
+    @OneToMany
+    private List<Task> tasks = new ArrayList<>();
+
+    @OneToMany
+    private List<Section> sections = new ArrayList<>();
+
+    @ManyToMany
+    private List<Department> departments ;
+
     @ManyToMany
     @JoinTable(
             name = "project_team",

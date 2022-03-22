@@ -18,13 +18,6 @@ public class Department {
     @Column
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "department_project",
-            joinColumns = @JoinColumn(name = "department_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
-    private List<Project> projects ;
 
     @ManyToMany
     @JoinTable(
