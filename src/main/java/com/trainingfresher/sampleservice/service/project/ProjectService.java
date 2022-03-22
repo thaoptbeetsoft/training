@@ -1,6 +1,7 @@
 package com.trainingfresher.sampleservice.service.project;
 
 import com.trainingfresher.sampleservice.model.entity.Project;
+import com.trainingfresher.sampleservice.model.entity.Section;
 import com.trainingfresher.sampleservice.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class ProjectService implements IProjectService {
     @Autowired
     private ProjectRepository projectRepository;
     @Override
-    public Iterable<Project> findAll() {
+    public List<Section> findAll() {
         return null;
     }
 
@@ -49,6 +50,7 @@ public class ProjectService implements IProjectService {
             return false;
         }
         projectOptional.get().setEnable(false);
+        projectRepository.save(projectOptional.get());
         return true;
     }
 }

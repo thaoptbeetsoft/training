@@ -25,6 +25,7 @@ public class ProjectController {
         }
         return new ResponseEntity<>(projectIterable, HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Project>findById(@PathVariable Long id){
         Optional<Project> projectIterable = projectService.findById(id);
@@ -33,6 +34,7 @@ public class ProjectController {
         }
         return new ResponseEntity<>(projectIterable.get(), HttpStatus.OK);
     }
+
     @GetMapping("/user/{id}")
     public ResponseEntity<List<Project>>findAllByUserIdAndDepartmentId(@PathVariable Long id){
         List<Project>projectList =projectService.findAllByUserIdAndDepartmentId(id);
@@ -41,11 +43,13 @@ public class ProjectController {
         }
         return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
+
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody Project project){
         projectService.save(project);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> editProject(@PathVariable Long id, @RequestBody Project project){
         Optional<Project> projectOptional=projectService.findById(id);
@@ -56,6 +60,7 @@ public class ProjectController {
         projectService.save(project);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Project>hide(@PathVariable Long id){
         Optional<Project>projectOptional = projectService.findById(id);

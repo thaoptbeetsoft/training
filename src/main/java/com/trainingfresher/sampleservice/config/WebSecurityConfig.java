@@ -16,9 +16,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // http.csrf().disable().anonymous().disable().authorizeRequests().antMatchers("/users/3").permitAll();
 
         // Allow access path
-        http.authorizeRequests().antMatchers("v3/api-docs", "/swagger-ui.html", "/actuator/**").permitAll();
+        //http.authorizeRequests().antMatchers("v3/api-docs", "/swagger-ui.html", "/actuator/**","/projects").permitAll();
 
-       // http.csrf().disable().authorizeRequests().anyRequest().permitAll();
+        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
 
     }
 
