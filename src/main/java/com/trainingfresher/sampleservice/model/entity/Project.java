@@ -1,4 +1,5 @@
 package com.trainingfresher.sampleservice.model.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -27,8 +28,10 @@ public class Project {
     @OneToMany
     private List<Section> sections = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany
     private List<Department> departments ;
+
 
     @ManyToMany
     @JoinTable(

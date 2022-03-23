@@ -1,4 +1,5 @@
 package com.trainingfresher.sampleservice.model.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -18,6 +19,14 @@ public class Department {
     @Column
     private String name;
 
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "department_project",
+            joinColumns = @JoinColumn(name = "department_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private List<Project> projects = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -26,7 +35,4 @@ public class Department {
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
     private List<Team> teams = new ArrayList<>();
-
-
-
 }

@@ -12,24 +12,23 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/projects")
-@CrossOrigin("*")
 public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
 
     @GetMapping("/department/{id}")
-    public ResponseEntity<List<Project>>findAllDepartmentId(@PathVariable Long id){
-        List<Project> projectIterable = projectService.findAllByDepartmentId(id);
-        if(projectIterable.isEmpty()){
+    public ResponseEntity<List<Project>>findAllDepartmentId(@PathVariable Long _id){
+        List<Project> projects = projectService.findAllByDepartmentId(_id);
+        if(projects.isEmpty() || projects == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(projectIterable, HttpStatus.OK);
+        return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Project>findById(@PathVariable Long id){
-        Optional<Project> projectIterable = projectService.findById(id);
+    public ResponseEntity<Project>findById(@PathVariable Long _id){
+        Optional<Project> projectIterable = projectService.findById(_id);
         if(!projectIterable.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -37,9 +36,9 @@ public class ProjectController {
     }
 
     @PostMapping("/{departmentId}")
-    public ResponseEntity<Void> create(@PathVariable Long departmentId,@RequestBody Project project){
-      Long projectId = projectService.save(project).getId();
-       boolean check =  projectService.addProjectInDepartment(departmentId,projectId);
+    public ResponseEntity<Void> create(@PathVariable Long _departmentId,@RequestBody Project _project){
+      Long projectId = projectService.save(_project).getId();
+       boolean check =  projectService.addProjectInDepartment(_departmentId,projectId);
      if(!check){
          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
      }
@@ -47,23 +46,23 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> editProject(@PathVariable Long id, @RequestBody Project project){
-        Optional<Project> projectOptional=projectService.findById(id);
+    public ResponseEntity<Void> editProject(@PathVariable Long _id, @RequestBody Project _project){
+        Optional<Project> projectOptional=projectService.findById(_id);
         if(!projectOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        project.setId(id);
-        projectService.save(project);
+        _project.setId(_id);
+        projectService.save(_project);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Project>hide(@PathVariable Long id){
-        Optional<Project>projectOptional = projectService.findById(id);
+    public ResponseEntity<Project>hide(@PathVariable Long _id){
+        Optional<Project>projectOptional = projectService.findById(_id);
         if(!projectOptional.isPresent()){
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        projectService.hide(id);
+        projectService.hide(_id);
         return new ResponseEntity<>(projectOptional.get(), HttpStatus.OK);
     }
 

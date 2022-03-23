@@ -1,6 +1,8 @@
 package com.trainingfresher.sampleservice.service.Section;
 
+import com.trainingfresher.sampleservice.model.entity.Project;
 import com.trainingfresher.sampleservice.model.entity.Section;
+import com.trainingfresher.sampleservice.repository.ProjectRepository;
 import com.trainingfresher.sampleservice.repository.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,9 @@ import java.util.Optional;
 public class SectionService implements ISectionService {
     @Autowired
     private SectionRepository sectionRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @Override
     public List<Section> findAll() {
@@ -36,4 +41,5 @@ public class SectionService implements ISectionService {
     public List<Section> findAllByProjectId(Long id) {
         return sectionRepository.findAllByProjectId(id);
     }
+
 }

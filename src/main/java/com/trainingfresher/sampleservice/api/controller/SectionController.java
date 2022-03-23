@@ -12,14 +12,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/sections")
-@CrossOrigin("/*")
 public class SectionController {
     @Autowired
     private SectionService sectionService;
 
     @GetMapping("/project/{id}")
-    public ResponseEntity<List<Section>> findAllByProjectId(@PathVariable Long id){
-        List<Section>sectionList=sectionService.findAllByProjectId(id);
+    public ResponseEntity<List<Section>> findAllByProjectId(@PathVariable Long _id){
+        List<Section>sectionList=sectionService.findAllByProjectId(_id);
         if(sectionList.isEmpty()){
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -27,31 +26,32 @@ public class SectionController {
     }
 
     @GetMapping("/{id}")
-    public  ResponseEntity<Section>findById(@PathVariable Long id){
-        Optional<Section>section = sectionService.findById(id);
+    public  ResponseEntity<Section>findById(@PathVariable Long _id){
+        Optional<Section>section = sectionService.findById(_id);
         if(!section.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(section.get(),HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Section>save(@RequestBody Section section){
-        if(section.getName().isEmpty()){
+    @PostMapping("/{projectId}")
+    public ResponseEntity<Section>save(@PathVariable Long _projectId,@RequestBody Section _section){
+        if(_section.getName().isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        sectionService.save(section);
-        return new ResponseEntity<>(section, HttpStatus.CREATED);
+        sectionService.save(_section);
+        return new ResponseEntity<>(_section, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{id}/{name}")
-    public ResponseEntity<Section> edit (@PathVariable Long id, @PathVariable String name){
-        Optional<Section>sectionOptional = sectionService.findById(id);
+    @PutMapping("/{id}")
+    public ResponseEntity<Section> edit (@PathVariable Long _id, @RequestBody Section _section){
+        Optional<Section>sectionOptional = sectionService.findById(_id);
         if(!sectionOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        sectionOptional.get().setName(name);
-        return new ResponseEntity<>(sectionOptional.get(),HttpStatus.OK);
+        _section.setId(_id);
+        sectionService.save(_section);
+        return new ResponseEntity<>(_section,HttpStatus.OK);
     }
 
 }
