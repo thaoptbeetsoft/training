@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ProjectDto {
+public class ProjectDto{
     private String name;
     private boolean enable;
     private List<Task>tasks;
