@@ -5,10 +5,10 @@ import com.trainingfresher.sampleservice.model.entity.Section;
 import java.util.List;
 import java.util.Optional;
 
-public interface IGeneralService<T> {
+public interface SectionService {
+    List<Section> findAllByProjectId(Long id);
     List<Section> findAll();
-    Optional<T>findById(Long id);
-    T save(T t);
+    Optional<Section> findById(Long id);
+    Section save(Section section);
     void remove(Long id);
-
 }

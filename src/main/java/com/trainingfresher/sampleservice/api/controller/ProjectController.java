@@ -1,7 +1,7 @@
 package com.trainingfresher.sampleservice.api.controller;
 
 import com.trainingfresher.sampleservice.model.entity.Project;
-import com.trainingfresher.sampleservice.service.project.ProjectService;
+import com.trainingfresher.sampleservice.service.impl.ProjectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ProjectController {
 
     @Autowired
-    private ProjectService projectService;
+    private ProjectServiceImpl projectService;
 
     @GetMapping("/department/{id}")
     public ResponseEntity<List<Project>>findAllDepartmentId(@PathVariable Long _id){

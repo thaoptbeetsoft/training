@@ -1,8 +1,9 @@
-package com.trainingfresher.sampleservice.service.department;
+package com.trainingfresher.sampleservice.service.impl;
 
 import com.trainingfresher.sampleservice.model.entity.Department;
 import com.trainingfresher.sampleservice.model.entity.Section;
 import com.trainingfresher.sampleservice.repository.DepartmentRepository;
+import com.trainingfresher.sampleservice.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DepartmentService implements IDepartmentService{
+public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentRepository departmentRepository;
     @Override
-    public List<Section> findAll() {
+    public List<Department> findAll() {
         return null;
     }
 

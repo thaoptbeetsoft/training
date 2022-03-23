@@ -1,7 +1,7 @@
 package com.trainingfresher.sampleservice.api.controller;
 
 import com.trainingfresher.sampleservice.model.entity.Section;
-import com.trainingfresher.sampleservice.service.Section.SectionService;
+import com.trainingfresher.sampleservice.service.impl.SectionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequestMapping("/sections")
 public class SectionController {
     @Autowired
-    private SectionService sectionService;
+    private SectionServiceImpl sectionService;
 
     @GetMapping("/project/{id}")
     public ResponseEntity<List<Section>> findAllByProjectId(@PathVariable Long _id){

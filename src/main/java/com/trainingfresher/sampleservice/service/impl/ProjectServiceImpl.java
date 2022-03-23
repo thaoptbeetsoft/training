@@ -1,10 +1,9 @@
-package com.trainingfresher.sampleservice.service.project;
+package com.trainingfresher.sampleservice.service.impl;
 
 import com.trainingfresher.sampleservice.model.entity.Department;
 import com.trainingfresher.sampleservice.model.entity.Project;
-import com.trainingfresher.sampleservice.model.entity.Section;
 import com.trainingfresher.sampleservice.repository.ProjectRepository;
-import com.trainingfresher.sampleservice.service.department.DepartmentService;
+import com.trainingfresher.sampleservice.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +12,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProjectService implements IProjectService {
+public class ProjectServiceImpl implements ProjectService {
     @Autowired
-    private DepartmentService departmentService;
+    private DepartmentServiceImpl departmentService;
 
     @Autowired
     private ProjectRepository projectRepository;
 
     @Override
-    public List<Section> findAll() {
+    public List<Project> findAll() {
         return null;
     }
 

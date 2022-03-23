@@ -1,9 +1,9 @@
-package com.trainingfresher.sampleservice.service.Section;
+package com.trainingfresher.sampleservice.service.impl;
 
-import com.trainingfresher.sampleservice.model.entity.Project;
 import com.trainingfresher.sampleservice.model.entity.Section;
 import com.trainingfresher.sampleservice.repository.ProjectRepository;
 import com.trainingfresher.sampleservice.repository.SectionRepository;
+import com.trainingfresher.sampleservice.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SectionService implements ISectionService {
+public class SectionServiceImpl implements SectionService {
     @Autowired
     private SectionRepository sectionRepository;
 
