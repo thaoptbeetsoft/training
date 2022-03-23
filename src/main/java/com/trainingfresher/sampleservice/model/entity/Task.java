@@ -1,27 +1,22 @@
 package com.trainingfresher.sampleservice.model.entity;
 import com.fasterxml.jackson.annotation.*;
 import com.trainingfresher.sampleservice.model.dto.TaskDto;
-import com.trainingfresher.sampleservice.utils.constants.Constant;
 import lombok.*;
-
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-import java.util.logging.Filter;
 
-@Entity
+
 @Table(name = "tasks")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Task {
 
     @Id
@@ -50,17 +45,15 @@ public class Task {
     @Column
     private String priority;
 
-
-
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "project_id")
     private Project project;
 
-
-
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "section_id")
-    private Section  section;
+    private Section section;
 
     @Column(name = "job_description")
     private String jobDescription;
@@ -78,25 +71,9 @@ public class Task {
     @OneToMany(mappedBy = "parent")
     private List<Task> subTask;
 
+    @JsonIgnore
     @OneToMany
     private List<Comment> comments = new ArrayList<>();
-
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public Section getSection() {
-        return section;
-    }
-
-    public void setSection(Section section) {
-        this.section = section;
-    }
 
     public  TaskDto toDto() {
         return  TaskDto.builder()
@@ -116,6 +93,4 @@ public class Task {
                 .histories(histories)
                 .build();
     }
-
-
 }

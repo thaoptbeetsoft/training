@@ -12,14 +12,12 @@ import java.util.List;
 @Data
 public class Team {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
     private String name;
-
 
     @ManyToMany(mappedBy = "teams")
     private List<Project> projects = new ArrayList<>();

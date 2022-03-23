@@ -1,4 +1,5 @@
 package com.trainingfresher.sampleservice.model.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +19,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class Comment {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
@@ -29,19 +29,21 @@ public class Comment {
     @Column
     private Date date;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "task_id")
     private Task task;
 
     @OneToOne
     @JoinColumn(name = "parent_id")
     private Comment parentComment;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "parentComment")
     private Comment subComment;
-
-
 }

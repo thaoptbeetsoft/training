@@ -1,5 +1,4 @@
 package com.trainingfresher.sampleservice.service.impl;
-
 import com.trainingfresher.sampleservice.api.form.CommentForm;
 import com.trainingfresher.sampleservice.api.form.TaskForm;
 import com.trainingfresher.sampleservice.model.entity.Comment;
@@ -18,12 +17,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-
 import java.util.*;
-
 
 @Service
 public class TaskServiceImpl implements TaskService {
+
 
     @Autowired
     private TaskRepository taskRepository;
@@ -33,7 +31,6 @@ public class TaskServiceImpl implements TaskService {
     private SectionRepository sectionRepository;
     @Autowired
     private CommentRepository commentRepository;
-
 
     @Override
     public Task addNewTask(TaskForm dto) {
@@ -50,24 +47,25 @@ public class TaskServiceImpl implements TaskService {
             throw new BadRequestException(msg);
         }
         Optional<Project> project = Optional.ofNullable(projectRepository.findById(dto.getProjectId()).get());
-        Optional<Section> section = Optional.ofNullable(sectionRepository.findById(dto.getSectionId()).get());
-
-        Task parent = taskRepository.findById(dto.getParentId()).get();
 
         task = Task.builder()
                 .name(dto.getName())
                 .startDay(dto.getStartDay())
                 .endDay(dto.getEndDay())
-                .type(section.get() == null ? "NonSection" : "InSection")
+                .type(dto.getProjectId() == null ? "Personal" : "InProject")
                 .jobDescription(dto.getJobDescription())
                 .status(dto.getStatus())
                 .priority(dto.getPriority())
-                .parent(dto.getParentId() != null ? parent : null)
                 .project(project.get())
-                .section(section.get())
                 .build();
+        if(dto.getSectionId() != null) {
+            Section section = sectionRepository.findById(dto.getSectionId()).get();
+            task.setSection(section);
+        }
 
-        if (!ObjectUtils.isEmpty(parent)) {
+        if(dto.getParentId() != null) {
+            Task parent = taskRepository.findById(dto.getParentId()).get();
+            task.setParent(parent);
             parent.getSubTask().add(task);
             List<Task> tasks = Arrays.asList(task, parent);
             taskRepository.saveAll(tasks);
@@ -88,13 +86,21 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getListTask(Long projectId, Long sectionId) {
-        List<Task> tasks;
 
-        if (sectionId != null) {
-            tasks = taskRepository.getListTaskInSection(projectId, sectionId);
-        } else {
-            tasks = taskRepository.getListTaskNonSection(projectId);
+        Optional<Project> project = Optional.ofNullable(projectRepository.findById(projectId).get());
+        Optional<Section> section = Optional.ofNullable(sectionRepository.findById(sectionId).get());
+
+        List<Task> tasks = new ArrayList<>();
+        if (!ObjectUtils.isEmpty(project.get()) && !ObjectUtils.isEmpty(section.get())) {
+            tasks = taskRepository.getListTaskInSectionAndProject(projectId, sectionId);
+
+        }else if (ObjectUtils.isEmpty(section.get()) && !ObjectUtils.isEmpty(project.get())) {
+            tasks = taskRepository.findByProject(project.get());
+
+        }else if(ObjectUtils.isEmpty(project.get()) && ObjectUtils.isEmpty(section.get())) {
+            tasks = taskRepository.getListTaskPersonal();
         }
+
         if (CollectionUtils.isEmpty(tasks)) {
             return Collections.EMPTY_LIST;
         }
@@ -141,41 +147,42 @@ public class TaskServiceImpl implements TaskService {
             String msg = "Invalid params";
             throw new BadRequestException(msg);
         }
-        Comment parent = commentRepository.findById(dto.getParentId()).get();
-
         Comment comment = Comment.builder()
                 .text(dto.getText())
                 .date(new Date())
-                .parentComment(dto.getParentId() != null ? parent : null)
+                .task(task)
                 .build();
-        if (!ObjectUtils.isEmpty(parent)) {
-            parent.setSubComment(comment);
+        if(dto.getParentId() != null) {
+            Comment parent = commentRepository.findById(dto.getParentId()).get();
+            comment.setParentComment(parent);
             List<Comment> comments = Arrays.asList(parent, comment);
             commentRepository.saveAll(comments);
             return comment;
         }
-        return commentRepository.save(comment);
+       return commentRepository.save(comment);
     }
 
     @Override
     public Comment editComment(Long taskId, Long commentId, String text) {
+
         Task task = taskRepository.findById(taskId).get();
         if (ObjectUtils.isEmpty(task)) {
             String msg = "Task not exist";
             throw new NotFoundException(msg);
         }
-        Comment comment = commentRepository.findById(commentId).get();
+        Optional<Comment> comment = Optional.ofNullable(commentRepository.findById(commentId).get());
         if (ObjectUtils.isEmpty(comment)) {
             String msg = "Comment not exist";
             throw new NotFoundException(msg);
         }
-        comment.setText(text);
-        comment.setDate(new Date());
-        return commentRepository.save(comment);
+        comment.get().setText(text);
+        comment.get().setDate(new Date());
+        return commentRepository.save(comment.get());
     }
 
     @Override
     public void deleteComment(Long taskId, Long commentId) {
+
         Task task = taskRepository.findById(taskId).get();
         if (ObjectUtils.isEmpty(task)) {
             String msg = "Task not exist";
@@ -191,12 +198,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Comment> getListComment(Long taskId) {
+
         Task task = taskRepository.findById(taskId).get();
         if (ObjectUtils.isEmpty(task)) {
             String msg = "Task not exist";
             throw new NotFoundException(msg);
         }
-        List<Comment> comments = commentRepository.findByTask(taskId);
+        List<Comment> comments = commentRepository.findByTask(task);
         if(!CollectionUtils.isEmpty(comments)) {
             return comments;
         }else {
@@ -204,5 +212,3 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 }
-
-

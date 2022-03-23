@@ -33,10 +33,4 @@ public class Department {
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
     private List<Team> teams = new ArrayList<>();
-
-    public Department() {
-
-    }
-
-
 }

@@ -29,11 +29,11 @@ public class Project {
     @Column
     private String name;
 
-
-
+    @JsonIgnore
     @OneToMany(mappedBy = "project")
     private Set<Task> tasks = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany
     private List<Section> sections = new ArrayList<>();
 

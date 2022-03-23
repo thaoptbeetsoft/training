@@ -25,11 +25,13 @@ public class Section{
     @Column
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "section")
     private Set<Task> tasks = new HashSet<>();
 

@@ -2,7 +2,6 @@ package com.trainingfresher.sampleservice.service;
 
 import com.trainingfresher.sampleservice.api.form.CommentForm;
 import com.trainingfresher.sampleservice.api.form.TaskForm;
-import com.trainingfresher.sampleservice.model.dto.TaskDto;
 import com.trainingfresher.sampleservice.model.entity.Comment;
 import com.trainingfresher.sampleservice.model.entity.Task;
 

@@ -12,10 +12,6 @@ import javax.persistence.Table;
 @Table(name = "history")
 @Data
 public class History {
-
-    public History() {
-
-    }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
@@ -30,5 +26,4 @@ public class History {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
 }
