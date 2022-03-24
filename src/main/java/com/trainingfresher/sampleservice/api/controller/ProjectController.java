@@ -51,7 +51,7 @@ public class ProjectController {
                             " + Name có độ dài từ 4 đến 30 kí tự \n" +
                             " + Enable chỉ là true/false\n" +
                             " + Department là số tự nhiên lớn hơn 0");
-        }else{
+        }
         Project project = projectService.convertFormToProject(_projectForm);
         Long departmentId = _projectForm.getDepartmentId();
          boolean check =  projectService.addProjectInDepartment(departmentId,project);
@@ -60,7 +60,7 @@ public class ProjectController {
      }
         return new ResponseEntity<>(HttpStatus.CREATED);
         }
-    }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> editProject(@PathVariable("id") Long _id, @RequestBody @Valid ProjectForm _projectForm,BindingResult bindingResult){
