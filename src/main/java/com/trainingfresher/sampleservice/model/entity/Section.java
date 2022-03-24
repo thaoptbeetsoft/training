@@ -1,10 +1,11 @@
 package com.trainingfresher.sampleservice.model.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -12,17 +13,24 @@ import java.util.List;
 @Data
 public class Section{
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany
-    private List<Task> tasks = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "section")
+    private Set<Task> tasks = new HashSet<>();
+
+    public Section() {
+
+    }
 
 }

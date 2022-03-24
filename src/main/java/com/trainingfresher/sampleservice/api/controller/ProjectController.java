@@ -1,14 +1,20 @@
 package com.trainingfresher.sampleservice.api.controller;
 
+import com.trainingfresher.sampleservice.api.form.ProjectForm;
+import com.trainingfresher.sampleservice.model.dto.ProjectDto;
 import com.trainingfresher.sampleservice.model.entity.Project;
 import com.trainingfresher.sampleservice.service.impl.ProjectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/projects")
@@ -18,46 +24,66 @@ public class ProjectController {
     private ProjectServiceImpl projectService;
 
     @GetMapping("/department/{id}")
-    public ResponseEntity<List<Project>>findAllDepartmentId(@PathVariable Long _id){
+    public ResponseEntity<List<ProjectDto>>findAllDepartmentId(@PathVariable("id") Long _id){
         List<Project> projects = projectService.findAllByDepartmentId(_id);
-        if(projects.isEmpty() || projects == null){
+        if(projects.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(projects, HttpStatus.OK);
+        List<ProjectDto> projectDtos = projects.stream().map(p ->projectService.convertProjectToDto(p)).collect(Collectors.toList());
+        return new ResponseEntity<>(projectDtos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Project>findById(@PathVariable Long _id){
+    public ResponseEntity<ProjectDto>findById(@PathVariable("id") Long _id){
         Optional<Project> projectIterable = projectService.findById(_id);
         if(!projectIterable.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(projectIterable.get(), HttpStatus.OK);
+        ProjectDto projectDto = projectService.convertProjectToDto(projectIterable.get());
+        return new ResponseEntity<>(projectDto, HttpStatus.OK);
     }
 
-    @PostMapping("/{departmentId}")
-    public ResponseEntity<Void> create(@PathVariable Long _departmentId,@RequestBody Project _project){
-      Long projectId = projectService.save(_project).getId();
-       boolean check =  projectService.addProjectInDepartment(_departmentId,projectId);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> create(@RequestBody @Valid ProjectForm _projectForm, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("ERROR các trường nhập vào không hợp lệ:\n" +
+                            " + Name có độ dài từ 4 đến 30 kí tự \n" +
+                            " + Enable chỉ là true/false\n" +
+                            " + Department là số tự nhiên lớn hơn 0");
+        }else{
+        Project project = projectService.convertFormToProject(_projectForm);
+        Long departmentId = _projectForm.getDepartmentId();
+         boolean check =  projectService.addProjectInDepartment(departmentId,project);
      if(!check){
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR NOT FOUND: departmentId");
      }
         return new ResponseEntity<>(HttpStatus.CREATED);
+        }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> editProject(@PathVariable Long _id, @RequestBody Project _project){
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> editProject(@PathVariable("id") Long _id, @RequestBody @Valid ProjectForm _projectForm,BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("ERROR các trường nhập vào không hợp lệ:\n" +
+                            " + Name có độ dài từ 4 đến 30 kí tự \n" +
+                            " + Enable chỉ là true/false\n" );
+        }
         Optional<Project> projectOptional=projectService.findById(_id);
         if(!projectOptional.isPresent()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR NOT FOUND: departmentId");
         }
-        _project.setId(_id);
-        projectService.save(_project);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Project project = projectService.convertFormToProject(_projectForm);
+        project.setId(_id);
+        project.setName(_projectForm.getName());
+        project.setEnable(_projectForm.getEnable());
+        projectService.save(project);
+        return ResponseEntity.status(HttpStatus.OK).body("Edit OK");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Project>hide(@PathVariable Long _id){
+    public ResponseEntity<Project>hide(@PathVariable("id") Long _id){
         Optional<Project>projectOptional = projectService.findById(_id);
         if(!projectOptional.isPresent()){
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);

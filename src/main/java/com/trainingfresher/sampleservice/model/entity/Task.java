@@ -1,4 +1,5 @@
 package com.trainingfresher.sampleservice.model.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -8,13 +9,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
 @Table(name = "tasks")
-@Data
-public class Task{
+@Entity
+public class Task {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  Long id;
 
     @Column
     private String name;
@@ -38,19 +39,24 @@ public class Task{
     @Column
     private String priority;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne()
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "section_id")
-    private Section  section;
+    private Section section;
 
     @Column(name = "job_description")
     private String jobDescription;
 
     @Column
     private String status;
+
+    @OneToMany()
+    private List<History> histories =  new ArrayList<>();
 
     @OneToOne()
     @JoinColumn(name = "parent_id")
@@ -59,8 +65,8 @@ public class Task{
     @OneToMany(mappedBy = "parent")
     private List<Task> subTask;
 
+    @JsonIgnore
     @OneToMany
     private List<Comment> comments = new ArrayList<>();
-
 
 }

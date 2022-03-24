@@ -1,9 +1,7 @@
 package com.trainingfresher.sampleservice.model.dto;
 
-import com.trainingfresher.sampleservice.model.entity.Department;
-import com.trainingfresher.sampleservice.model.entity.Section;
-import com.trainingfresher.sampleservice.model.entity.Task;
-import com.trainingfresher.sampleservice.model.entity.Team;
+import com.trainingfresher.sampleservice.model.entity.*;
+
 import lombok.Data;
 
 import java.util.List;
@@ -16,4 +14,6 @@ public class ProjectDto{
     private List<Section>sections;
     private List<Department>departments;
     private List<Team>teams;
+
+
 }

@@ -12,7 +12,6 @@ import java.util.List;
 @Data
 public class Team {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -20,6 +19,8 @@ public class Team {
     @Column
     private String name;
 
+    @ManyToMany(mappedBy = "teams")
+    private List<Project> projects = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -28,4 +29,7 @@ public class Team {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> users = new ArrayList<>();
+    public Team() {
+
+    }
 }

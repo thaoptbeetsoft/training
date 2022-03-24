@@ -1,5 +1,7 @@
 package com.trainingfresher.sampleservice.service;
 
+import com.trainingfresher.sampleservice.api.form.ProjectForm;
+import com.trainingfresher.sampleservice.model.dto.ProjectDto;
 import com.trainingfresher.sampleservice.model.entity.Project;
 
 
@@ -12,6 +14,8 @@ public interface ProjectService {
     void remove(Long id);
     List<Project> findAllByDepartmentId(Long id);
     boolean hide(Long id);
-    boolean addProjectInDepartment(Long department_id,Long project_id);
+    boolean addProjectInDepartment(Long department_id,Project project);
+    ProjectDto convertProjectToDto(Project project);
+    Project convertFormToProject(ProjectForm projectForm);
 
-}
+    }

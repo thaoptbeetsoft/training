@@ -27,7 +27,7 @@ public class Department {
             inverseJoinColumns = @JoinColumn(name = "project_id")
     )
     private List<Project> projects = new ArrayList<>();
-
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "department_team",
