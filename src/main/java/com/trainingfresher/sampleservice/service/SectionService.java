@@ -1,5 +1,6 @@
 package com.trainingfresher.sampleservice.service;
 
+import com.trainingfresher.sampleservice.model.dto.SectionDto;
 import com.trainingfresher.sampleservice.model.entity.Section;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface SectionService {
     Optional<Section> findById(Long id);
     Section save(Section section);
     void remove(Long id);
+    SectionDto convertSectionToDto(Section section);
+    Section convertDtoToSection(SectionDto sectionDto);
 }

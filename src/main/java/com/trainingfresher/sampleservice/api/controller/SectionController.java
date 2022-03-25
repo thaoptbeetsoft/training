@@ -1,14 +1,15 @@
 package com.trainingfresher.sampleservice.api.controller;
 
+import com.trainingfresher.sampleservice.model.dto.SectionDto;
 import com.trainingfresher.sampleservice.model.entity.Section;
 import com.trainingfresher.sampleservice.service.impl.SectionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/sections")
@@ -17,12 +18,15 @@ public class SectionController {
     private SectionServiceImpl sectionService;
 
     @GetMapping("/project/{id}")
-    public ResponseEntity<List<Section>> findAllByProjectId(@PathVariable Long _id){
+    public ResponseEntity<List<SectionDto>> findAllByProjectId(@PathVariable Long _id){
         List<Section>sectionList=sectionService.findAllByProjectId(_id);
         if(sectionList.isEmpty()){
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(sectionList,HttpStatus.OK);
+        List<SectionDto>sectionDtos= sectionList.stream()
+                .map(s -> sectionService.convertSectionToDto(s))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(sectionDtos,HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

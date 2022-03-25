@@ -29,8 +29,4 @@ public class Section{
     @OneToMany(mappedBy = "section")
     private Set<Task> tasks = new HashSet<>();
 
-    public Section() {
-
-    }
-
 }

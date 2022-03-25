@@ -29,7 +29,9 @@ public class ProjectController {
         if(projects.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<ProjectDto> projectDtos = projects.stream().map(p ->projectService.convertProjectToDto(p)).collect(Collectors.toList());
+        List<ProjectDto> projectDtos = projects.stream()
+                .map(p ->projectService.convertProjectToDto(p))
+                .collect(Collectors.toList());
         return new ResponseEntity<>(projectDtos, HttpStatus.OK);
     }
 
@@ -56,14 +58,19 @@ public class ProjectController {
         Long departmentId = _projectForm.getDepartmentId();
          boolean check =  projectService.addProjectInDepartment(departmentId,project);
      if(!check){
-         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR NOT FOUND: departmentId");
+         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                 .body("ERROR NOT FOUND: departmentId");
      }
         return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> editProject(@PathVariable("id") Long _id, @RequestBody @Valid ProjectForm _projectForm,BindingResult bindingResult){
+    public ResponseEntity<String> editProject(
+            @PathVariable("id") Long _id,
+            @RequestBody @Valid ProjectForm _projectForm,
+            BindingResult bindingResult)
+    {
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("ERROR các trường nhập vào không hợp lệ:\n" +
@@ -72,7 +79,8 @@ public class ProjectController {
         }
         Optional<Project> projectOptional=projectService.findById(_id);
         if(!projectOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR NOT FOUND: departmentId");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("ERROR NOT FOUND: departmentId");
         }
         Project project = projectService.convertFormToProject(_projectForm);
         project.setId(_id);
