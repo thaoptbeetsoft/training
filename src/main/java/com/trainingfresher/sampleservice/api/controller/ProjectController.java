@@ -46,7 +46,7 @@ public class ProjectController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> create(@RequestBody @Valid ProjectForm _projectForm, BindingResult bindingResult){
+    public ResponseEntity<String> save(@RequestBody @Valid ProjectForm _projectForm, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("ERROR các trường nhập vào không hợp lệ:\n" +

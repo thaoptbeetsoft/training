@@ -5,7 +5,9 @@ import com.trainingfresher.sampleservice.model.entity.Section;
 import com.trainingfresher.sampleservice.service.impl.SectionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -35,27 +37,39 @@ public class SectionController {
         if(!section.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        SectionDto sectionDto = sectionService.convertSectionToDto(section.get());
         return new ResponseEntity<>(section.get(),HttpStatus.OK);
     }
 
-    @PostMapping("/{projectId}")
-    public ResponseEntity<Section>save(@PathVariable Long _projectId,@RequestBody Section _section){
-        if(_section.getName().isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String>save(@RequestBody SectionDto _sectionDto, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("ERROR các trường nhập vào không hợp lệ:\n" +
+                            " + Name có độ dài từ 4 đến 30 kí tự \n" +
+                            " + ProjectId là số nguyên dương\n");
         }
-        sectionService.save(_section);
-        return new ResponseEntity<>(_section, HttpStatus.CREATED);
+        Section section =  sectionService.convertDtoToSection(_sectionDto);
+        sectionService.save(section);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Section> edit (@PathVariable Long _id, @RequestBody Section _section){
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> edit (@PathVariable Long _id, @RequestBody SectionDto _sectionDto, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("ERROR các trường nhập vào không hợp lệ:\n" +
+                            " + Name có độ dài từ 4 đến 30 kí tự \n" +
+                            " + ProjectId là số nguyên dương\n");
+        }
         Optional<Section>sectionOptional = sectionService.findById(_id);
         if(!sectionOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        _section.setId(_id);
-        sectionService.save(_section);
-        return new ResponseEntity<>(_section,HttpStatus.OK);
+        Section section =  sectionService.convertDtoToSection(_sectionDto);
+        section.setId(_id);
+        sectionService.save(section);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
